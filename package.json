@@ -11,7 +11,10 @@
   "dependencies": {
     "@prisma/client": "^5.12.1",
     "@prisma/extension-accelerate": "^1.0.0",
+    "@types/pdfkit": "^0.13.4",
     "@vercel/postgres": "^0.8.0",
+    "axios": "^1.6.8",
+    "express": "^4.19.2",
     "next": "14.2.2",
     "pdfkit": "^0.15.0",
     "react": "^18",

@@ -1,7 +1,9 @@
 'use client'
+
 import styles from '@/app/home.module.css';
 import React, { useState } from 'react';
 import axios from 'axios';
+
 function Form() {
         const [formData, setFormData] = useState({
             centreName: '',
@@ -26,7 +28,7 @@ function Form() {
         const handleSubmit = async (e: { preventDefault: () => void; }) => {
             e.preventDefault();
             try {
-                const response = await axios.post('/api/generatePdf', formData); // Updated endpoint path
+                const response = await axios.post('api/generate', formData); // Updated endpoint path
                 console.log('PDF generated:', response.data.filePath);
             } catch (error) {
                 console.error('Error generating PDF:', error);
@@ -95,7 +97,7 @@ export default function Home() {
         <div>
             <div className={styles.top}>
                 <h1>Invoice Generator</h1>
-                <p>Generate invoices with ease</p>
+                {/*<p>Generate invoices with ease</p>*/}
             </div>
             <div className={styles.container}>
                 <Form/>

@@ -1,20 +1,11 @@
-// pages/api/generatePdf.ts
-
-import { NextApiRequest, NextApiResponse } from 'next';
 import PDFDocument from 'pdfkit';
 import fs from 'fs';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: any, res: any) {
     if (req.method === 'POST') {
         const formData = req.body;
-
-        // Create a new PDF document
         const doc = new PDFDocument();
 
-        // Set font and font size
-        doc.font('Helvetica').fontSize(12);
-
-        // Add content to the PDF
         doc.text(`${formData.centreName}`);
         doc.text(`${formData.address}`);
         doc.text(`${formData.contactNo}`);
@@ -28,19 +19,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         doc.text(`Amount Paid: ${formData.totalAmountPaid}`);
         doc.text(`${formData.greetingMessage}`);
 
-        // Save the PDF to a file
-        const filePath = `pdfs/pdf_${Date.now()}.pdf`;  // Updated file path
+        const filePath = `pdfs/pdf_${Date.now()}.pdf`;
         doc.pipe(fs.createWriteStream(filePath));
         doc.end();
 
         const fileData = fs.readFileSync(filePath);
-        // Set response headers for download
+
         res.setHeader('Content-Disposition', `attachment; filename=${filePath}`);
         res.setHeader('Content-Type', 'application/pdf');
 
-        // Return the file path or other response
         res.status(200).end(fileData);
     } else {
         res.status(405).json({ error: 'Method Not Allowed' });
     }
 }
+
+
+
+

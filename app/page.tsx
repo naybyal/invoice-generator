@@ -2,7 +2,9 @@
 
 import styles from '@/app/home.module.css';
 import React, { useState } from 'react';
-import axios from 'axios';
+
+import PDFDocument from "pdfkit";
+import fs from 'fs';
 
 function Form() {
         const [formData, setFormData] = useState({
@@ -28,8 +30,27 @@ function Form() {
         const handleSubmit = async (e: { preventDefault: () => void; }) => {
             e.preventDefault();
             try {
-                const response = await axios.post('api/generate', formData); // Updated endpoint path
-                console.log('PDF generated:', response.data.filePath);
+                const doc = new PDFDocument();
+
+                doc.text(`${formData.centreName}`);
+                doc.text(`${formData.address}`);
+                doc.text(`${formData.contactNo}`);
+                doc.text(`${formData.pinCode}`);
+                doc.text(`${formData.uniqueCode}`);
+                doc.text(`T${formData.serialNumber}`);
+                doc.text(`${formData.transactionDate}`);
+                doc.text(`Applicant Name: ${formData.applicantName}`);
+                doc.text(`Service Availed: ${formData.serviceAvailed}`);
+                doc.text(`Service Charge (Govt.): ${formData.govtServiceCharge}`);
+                doc.text(`Amount Paid: ${formData.totalAmountPaid}`);
+                doc.text(`${formData.greetingMessage}`);
+
+                const filePath = `pdfs/pdf_${Date.now()}.pdf`;
+                doc.pipe(fs.createWriteStream(filePath));
+                doc.end();
+
+                const fileData = fs.readFileSync(filePath);
+                console.log('PDF generated:', fileData);
             } catch (error) {
                 console.error('Error generating PDF:', error);
             }

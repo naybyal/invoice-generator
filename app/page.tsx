@@ -2,7 +2,7 @@
 
 import styles from '@/app/home.module.css';
 import React, { useState } from 'react';
-import jsPDF from 'jspdf'
+import JsPDF from 'jspdf'
 
 function Form() {
         const [formData, setFormData] = useState({
@@ -28,7 +28,7 @@ function Form() {
         const handleSubmit = async (e: { preventDefault: () => void; }) => {
             e.preventDefault();
             try {
-                const doc = new jsPDF();
+                const doc = new JsPDF();
 
                 let y = 10;
                 Object.entries(formData).forEach(([key, value]) => {
@@ -109,7 +109,6 @@ export default function Home() {
         <div>
             <div className={styles.top}>
                 <h1>Invoice Generator</h1>
-                {/*<p>Generate invoices with ease</p>*/}
             </div>
             <div className={styles.container}>
                 <Form/>
